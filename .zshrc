@@ -6,7 +6,7 @@ fi
 # Oh My Zsh setup
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="powerlevel10k/powerlevel10k"
-plugins=(git zsh-autosuggestions)
+plugins=(git zsh-autosuggestions zsh-bat)
 
 source "$ZSH/oh-my-zsh.sh"
 
@@ -30,3 +30,6 @@ export PATH=$HOME/.local/bin:$PATH
 
 # Load Powerlevel10k configuration
 [ -f "$HOME/.p10k.zsh" ] && source "$HOME/.p10k.zsh"
+
+# Go toolchain
+export PATH=$PATH:/usr/local/go/bin

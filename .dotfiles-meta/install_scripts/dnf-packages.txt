@@ -3,3 +3,5 @@ gcc
 clang
 btop
 wget
+zsh-syntax-highlighting
+bat
