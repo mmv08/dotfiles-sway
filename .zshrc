@@ -33,3 +33,4 @@ export PATH=$HOME/.local/bin:$PATH
 
 # Go toolchain
 export PATH=$PATH:/usr/local/go/bin
+source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
