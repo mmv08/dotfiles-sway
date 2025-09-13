@@ -9,8 +9,6 @@ install_package_if_missing curl
 export NVM_DIR="$HOME/.nvm"
 if [ ! -d "$NVM_DIR" ]; then
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
-else
-  git -C "$NVM_DIR" pull --ff-only
 fi
 
 # shellcheck source=/dev/null
