@@ -1,23 +1,22 @@
 #!/usr/bin/env bash
-# install_podman.sh — Install Podman and basic tooling on Fedora
-
 set -euo pipefail
 
-echo "→ Installing Podman and related tools …"
-sudo dnf install -y podman podman-compose buildah skopeo
+SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+source "$SCRIPT_DIR/utils.sh"
 
-# Enable Podman socket for Docker-compatible clients (optional)
-if systemctl --user --version >/dev/null 2>&1; then
-  echo "→ Enabling user podman.socket (Docker-compatible API) …"
-  systemctl --user enable --now podman.socket || true
-else
-  echo "(No systemd --user detected; skipping podman.socket enable)"
+install_package_if_missing podman
+install_package_if_missing podman-compose
+install_package_if_missing buildah
+install_package_if_missing skopeo
+
+# Enable Podman socket for Docker-compatible clients if systemd user session is available
+if systemctl --user --version >/dev/null 2>&1 && [ -n "${XDG_RUNTIME_DIR:-}" ]; then
+  systemctl --user enable podman.socket || true
+  # Only use --now if we can actually start services
+  if systemctl --user is-system-running >/dev/null 2>&1 || systemctl --user status >/dev/null 2>&1; then
+    systemctl --user start podman.socket || true
+  fi
 fi
-
-echo
-echo "✔ Podman installed. Version: $(podman --version)"
-echo "   Use 'podman' and 'podman compose'. For Docker CLI compatibility, set DOCKER_HOST=unix://$XDG_RUNTIME_DIR/podman/podman.sock"
-echo
 
 
 
