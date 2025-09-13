@@ -10,7 +10,7 @@ fi
 
 # Get latest version and download URL from Slack's official API
 API_RESPONSE=$(curl -fsSL "https://slack.com/api/desktop.latestRelease?variant=rpm&arch=x64")
-LATEST_URL=$(echo "$API_RESPONSE" | grep -o '"url":"[^"]*' | cut -d'"' -f4)
+LATEST_URL=$(echo "$API_RESPONSE" | grep -o '"download_url":"[^"]*' | cut -d'"' -f4)
 
 if [ -z "$LATEST_URL" ]; then
   echo "Failed to get download URL from Slack API"
