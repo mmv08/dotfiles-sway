@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-## install_nerd_fonts.sh — Install Inconsolata Nerd Font
-
 set -euo pipefail
+
+SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+source "$SCRIPT_DIR/utils.sh"
 
 FONT_DIR="$HOME/.local/share/fonts"
 ZIP_URL="https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Inconsolata.zip"
@@ -10,6 +11,8 @@ mkdir -p "$FONT_DIR"
 
 TMP_DIR="$(mktemp -d)"
 trap 'rm -rf "$TMP_DIR"' EXIT
+
+install_package_if_missing unzip
 
 curl -fL "$ZIP_URL" -o "$TMP_DIR/Inconsolata.zip"
 unzip -o -q "$TMP_DIR/Inconsolata.zip" -d "$FONT_DIR"
