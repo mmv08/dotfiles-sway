@@ -1,17 +1,14 @@
-# Enable Powerlevel10k instant prompt
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 # Oh My Zsh setup
 export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="powerlevel10k/powerlevel10k"
+ZSH_THEME=""
 plugins=(git zsh-autosuggestions zsh-bat)
 
 source "$ZSH/oh-my-zsh.sh"
 
 # Alias for bare repo management
 alias dot='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias ls='lsd'
+alias lt='ls --tree'
 
 # NVM
 export NVM_DIR="$HOME/.nvm"
@@ -34,3 +31,6 @@ export PATH=$HOME/.local/bin:$PATH
 # Go toolchain
 export PATH=$PATH:/usr/local/go/bin
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# Starship prompt, keep it last
+eval "$(starship init zsh)"

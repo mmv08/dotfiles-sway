@@ -11,6 +11,7 @@ PLUGIN_DIR="$ZSH_CUSTOM/plugins/zsh-autosuggestions"
 if [[ ! -d "$PLUGIN_DIR" ]]; then
   echo "Cloning zsh-autosuggestions into $PLUGIN_DIR..."
   git clone https://github.com/zsh-users/zsh-autosuggestions.git "$PLUGIN_DIR"
+  git clone https://github.com/fdellwing/zsh-bat.git $ZSH_CUSTOM/plugins/zsh-bat
 else
   echo "Updating zsh-autosuggestions in $PLUGIN_DIR..."
   git -C "$PLUGIN_DIR" pull --ff-only

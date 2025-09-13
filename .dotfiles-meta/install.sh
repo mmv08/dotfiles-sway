@@ -9,14 +9,14 @@ SCRIPTS_DIR="$SCRIPT_DIR/install_scripts"
 
 echo "Starting bootstrap installation..."
 
-# Define execution order: ensure zsh is installed before powerlevel10k
+# Define execution order: ensure zsh and nerd fonts before starship
 priority=(
   "install_zsh.sh"
+  "install_nerd_fonts.sh"
   "install_zsh_plugins.sh"
-  "install_powerlevel10k.sh"
+  "install_starship.sh"
   "install_dnf.sh"
   "install_vscode.sh"
-  "install_protonvpn.sh"
 )
 
 # Build ordered list of scripts to run

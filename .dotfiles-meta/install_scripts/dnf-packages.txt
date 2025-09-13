@@ -5,3 +5,4 @@ btop
 wget
 zsh-syntax-highlighting
 bat
+lsd
