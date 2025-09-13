@@ -1,26 +1,18 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO_FILE=/etc/yum.repos.d/vscode.repo
-if [ ! -f "$REPO_FILE" ]; then
-  echo "Importing VS Code GPG key and adding repository..."
-  sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
-  sudo tee "$REPO_FILE" > /dev/null <<'EOF'
-[code]
+SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+source "$SCRIPT_DIR/utils.sh"
+
+REPO_CONTENT='[code]
 name=Visual Studio Code
 baseurl=https://packages.microsoft.com/yumrepos/vscode
 enabled=1
 gpgcheck=1
-gpgkey=https://packages.microsoft.com/keys/microsoft.asc
-EOF
-else
-  echo "VS Code repository already configured."
-fi
+gpgkey=https://packages.microsoft.com/keys/microsoft.asc'
 
-if command -v code >/dev/null; then
-  echo "VS Code is already installed."
-else
-  echo "Installing VS Code..."
+setup_rpm_repo "/etc/yum.repos.d/vscode.repo" "$REPO_CONTENT" "https://packages.microsoft.com/keys/microsoft.asc"
+if ! command_exists code; then
   sudo dnf check-update || true
   sudo dnf install -y code
 fi

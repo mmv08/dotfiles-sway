@@ -1,17 +1,21 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-install_slack_rpm() {
-  if command -v slack &> /dev/null; then
-    echo "Slack is already installed."
-    return
-  fi
+SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+source "$SCRIPT_DIR/utils.sh"
 
-  echo "Downloading Slack RPM..."
-  wget -qO /tmp/slack.rpm https://downloads.slack-edge.com/desktop-releases/linux/x64/4.43.51/slack-4.43.51-0.1.el8.x86_64.rpm
+if command_exists slack; then
+  exit 0
+fi
 
-  echo "Installing Slack..."
-  sudo dnf install -y /tmp/slack.rpm
-}
+# Get latest version dynamically
+LATEST_URL=$(curl -sL https://slack.com/ssb/download | grep -o 'https://downloads.slack-edge.com/desktop-releases/linux/x64/[^"]*\.rpm' | head -1)
 
-install_slack_rpm
+if [ -z "$LATEST_URL" ]; then
+  echo "Could not find Slack download URL"
+  exit 1
+fi
+
+curl -fsSL "$LATEST_URL" -o /tmp/slack.rpm
+sudo dnf install -y /tmp/slack.rpm
+rm -f /tmp/slack.rpm

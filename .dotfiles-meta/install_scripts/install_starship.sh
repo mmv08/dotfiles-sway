@@ -1,39 +1,40 @@
 #!/usr/bin/env bash
-## install_starship.sh — Install or update Starship prompt on Fedora/Linux
-
 set -euo pipefail
 
-curl -sS https://starship.rs/install.sh | sh -s -- -y;
+SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+source "$SCRIPT_DIR/utils.sh"
 
+# Install starship via package manager instead of curl-to-shell
+if ! command_exists starship; then
+  install_package_if_missing curl
 
-###############################################################################
-# 2. Ensure Zsh init is present
-###############################################################################
-ZSHRC="$HOME/.zshrc"
+  # Download and verify starship binary
+  ARCH=$(uname -m)
+  case "$ARCH" in
+    x86_64) STARSHIP_ARCH="x86_64" ;;
+    aarch64) STARSHIP_ARCH="aarch64" ;;
+    *) echo "Unsupported architecture: $ARCH"; exit 1 ;;
+  esac
+
+  LATEST_URL="https://api.github.com/repos/starship/starship/releases/latest"
+  LATEST_VERSION=$(curl -s "$LATEST_URL" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+  TARBALL="starship-${STARSHIP_ARCH}-unknown-linux-musl.tar.gz"
+  DOWNLOAD_URL="https://github.com/starship/starship/releases/download/${LATEST_VERSION}/${TARBALL}"
+
+  TEMP_DIR=$(mktemp -d)
+  trap 'rm -rf "$TEMP_DIR"' EXIT
+
+  curl -fsSL "$DOWNLOAD_URL" -o "$TEMP_DIR/$TARBALL"
+  tar -xzf "$TEMP_DIR/$TARBALL" -C "$TEMP_DIR"
+  sudo install "$TEMP_DIR/starship" /usr/local/bin/starship
+fi
+# Add starship init to shell RC
 INIT_LINE='eval "$(starship init zsh)"'
+add_to_shell_rc "# Starship prompt\n$INIT_LINE"
 
-if [[ -f "$ZSHRC" ]]; then
-  if grep -Fq "$INIT_LINE" "$ZSHRC"; then
-    echo "→ Starship init already present in $ZSHRC"
-  else
-    echo "→ Adding Starship init to $ZSHRC"
-    printf '\n# Starship prompt\n%s\n' "$INIT_LINE" >> "$ZSHRC"
-  fi
-else
-  echo "→ No ~/.zshrc found; creating minimal one with Starship init"
-  printf '#!/usr/bin/env zsh\n\n# Starship prompt\n%s\n' "$INIT_LINE" > "$ZSHRC"
+# Disable Oh-My-Zsh theme to avoid conflicts
+if [[ -f "$HOME/.zshrc" ]] && grep -q '^ZSH_THEME=' "$HOME/.zshrc"; then
+  sed -i 's|^ZSH_THEME=.*|ZSH_THEME=""|' "$HOME/.zshrc"
 fi
 
-###############################################################################
-# 3. (Optional) Disable Oh-My-Zsh theme to avoid double prompts
-###############################################################################
-if [[ -f "$ZSHRC" ]]; then
-  if grep -q '^ZSH_THEME=' "$ZSHRC"; then
-    # Keep existing line but set to empty to let Starship fully own the prompt
-    sed -i 's|^ZSH_THEME=.*|ZSH_THEME=""|' "$ZSHRC"
-  fi
-fi
-
-echo "✔ Starship is ready. Start a new Zsh session or run: exec zsh"
-
-
+echo "Starship installation complete"
