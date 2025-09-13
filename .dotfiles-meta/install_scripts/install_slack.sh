@@ -8,11 +8,12 @@ if command_exists slack; then
   exit 0
 fi
 
-# Get latest version dynamically
-LATEST_URL=$(curl -sL https://slack.com/ssb/download | grep -o 'https://downloads.slack-edge.com/desktop-releases/linux/x64/[^"]*\.rpm' | head -1)
+# Get latest version and download URL from Slack's official API
+API_RESPONSE=$(curl -fsSL "https://slack.com/api/desktop.latestRelease?variant=rpm&arch=x64")
+LATEST_URL=$(echo "$API_RESPONSE" | grep -o '"url":"[^"]*' | cut -d'"' -f4)
 
 if [ -z "$LATEST_URL" ]; then
-  echo "Could not find Slack download URL"
+  echo "Failed to get download URL from Slack API"
   exit 1
 fi
 
