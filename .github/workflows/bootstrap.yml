@@ -22,7 +22,7 @@ jobs:
           dnf install -y curl git sudo
 
       - name: Run bootstrap (first pass)
-        run: bash ./bootstrap.sh
+        run: bash .dotfiles-meta/bootstrap.sh
 
       - name: Show installation log
         if: always()
@@ -39,7 +39,7 @@ jobs:
           echo "ZSHRC_SHA_FIRST=$(sha256sum "$HOME/.zshrc" | awk '{print $1}')" >> $GITHUB_ENV
 
       - name: Run bootstrap (idempotency check)
-        run: bash ./bootstrap.sh
+        run: bash .dotfiles-meta/bootstrap.sh
 
       - name: Show installation log (second run)
         if: always()

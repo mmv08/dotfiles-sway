@@ -39,3 +39,10 @@ if [ -n "${DOTFILES_ZSHRC_BACKUP:-}" ] && [ -f "$DOTFILES_ZSHRC_BACKUP" ]; then
   cp "$DOTFILES_ZSHRC_BACKUP" "$HOME/.zshrc"
   echo "Bootstrap .zshrc restored successfully"
 fi
+
+# Change default shell to zsh if not already set
+if [ "$SHELL" != "$(command -v zsh)" ]; then
+  echo "Changing default shell to zsh..."
+  chsh -s "$(command -v zsh)"
+  echo "Default shell changed to zsh. Please log out and log back in for the change to take effect."
+fi

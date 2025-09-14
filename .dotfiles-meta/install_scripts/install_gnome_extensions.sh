@@ -32,7 +32,8 @@ enable_gnome_extension "tactile@lundal.io"
 ASTRA_DIR="$HOME/.local/share/gnome-shell/extensions/monitor@astraext.github.io"
 if command_exists gnome-extensions && [ ! -d "$ASTRA_DIR" ]; then
   # From: https://extensions.gnome.org/extension/6682/astra-monitor/
-  ASTRA_URL="https://extensions.gnome.org/extension-data/monitorastraext.github.io.v26.shell-extension.zip"
+  # Updated to latest version 35
+  ASTRA_URL="https://extensions.gnome.org/extension-data/monitorastraext.github.io.v35.shell-extension.zip"
 
   mkdir -p "$(dirname "$ASTRA_DIR")"
   curl -fsSL "$ASTRA_URL" -o "/tmp/astra-monitor.zip"
@@ -46,3 +47,14 @@ enable_gnome_extension "monitor@astraext.github.io"
 if command_exists gsettings; then
   gsettings set org.gnome.desktop.wm.preferences button-layout ":minimize,maximize,close"
 fi
+
+echo ""
+echo "GNOME Extensions installation completed!"
+echo "Note: You may need to:"
+echo "1. Log out and log back in (or restart GNOME Shell with Alt+F2, then type 'r')"
+echo "2. Enable extensions manually if they weren't auto-enabled:"
+echo "   - dash-to-dock@micxgx.gmail.com"
+echo "   - appindicatorsupport@rgcjonas.gmail.com"
+echo "   - tactile@lundal.io"
+echo "   - monitor@astraext.github.io"
+echo "3. Use 'gnome-extensions list --enabled' to verify enabled extensions"
