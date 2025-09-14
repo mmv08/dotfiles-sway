@@ -7,7 +7,7 @@ Lightweight dotfiles setup for Fedora using a bare Git repository that tracks fi
 One command to set up everything:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/mmv08/dotfiles/master/bootstrap.sh | bash
+curl -fsSL https://raw.githubusercontent.com/mmv08/dotfiles/master/.dotfiles-meta/bootstrap.sh | bash
 ```
 
 This will:
@@ -22,7 +22,8 @@ This will:
 |------|---------|
 | `~/.dotfiles` | Bare Git repository |
 | `~/.dotfiles-meta/` | Install scripts and meta files |
-| `~/.dotfiles-meta/install.sh` | Main bootstrap script |
+| `~/.dotfiles-meta/bootstrap.sh` | Bootstrap script for initial setup |
+| `~/.dotfiles-meta/install.sh` | Main installation script |
 | `~/.dotfiles-meta/install_scripts/` | Individual installers |
 
 ## 🛠️ Daily Workflow
