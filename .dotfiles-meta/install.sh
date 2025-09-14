@@ -35,6 +35,13 @@ cleanup() {
 }
 trap cleanup EXIT INT
 
+# Check if bare repo exists
+if [ ! -d "$HOME/.dotfiles" ]; then
+    log_error "Dotfiles repository not found. Run bootstrap.sh first:"
+    echo "  curl -fsSL https://raw.githubusercontent.com/mmv08/dotfiles/master/bootstrap.sh | bash"
+    exit 1
+fi
+
 log "Updating system packages..."
 sudo dnf upgrade --refresh -y 2>&1 | tee -a "$LOG_FILE"
 
