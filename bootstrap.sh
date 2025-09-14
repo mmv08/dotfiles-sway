@@ -123,19 +123,6 @@ checkout_dotfiles() {
 main() {
     log "Starting dotfiles bootstrap process..."
 
-    # Check if running on Fedora
-    if [ -f /etc/fedora-release ]; then
-        log_success "Detected Fedora system"
-    else
-        log_warning "This script is optimized for Fedora. Some features may not work correctly."
-        read -p "Continue anyway? (y/N) " -n 1 -r
-        echo
-        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-            log "Bootstrap cancelled"
-            exit 0
-        fi
-    fi
-
     # Setup the bare repository
     setup_bare_repo
 
@@ -151,7 +138,10 @@ main() {
     # Run the main installation script
     if [ -x "$DOTFILES_META/install.sh" ]; then
         log "Running installation scripts..."
-        "$DOTFILES_META/install.sh"
+        "$DOTFILES_META/install.sh" || {
+            log_error "Installation failed. Check the log at $HOME/.dotfiles-install.log"
+            exit 1
+        }
         log_success "Installation completed"
     else
         log_error "Installation script not found or not executable at $DOTFILES_META/install.sh"
@@ -184,16 +174,5 @@ main() {
     echo ""
 }
 
-# Handle script being piped from curl
-if [ -t 0 ]; then
-    # Running interactively
-    main "$@"
-else
-    # Being piped (from curl)
-    # Save ourselves to a temp file and execute
-    TEMP_SCRIPT=$(mktemp /tmp/dotfiles-bootstrap.XXXXXX)
-    cat > "$TEMP_SCRIPT"
-    chmod +x "$TEMP_SCRIPT"
-    bash "$TEMP_SCRIPT" "$@"
-    rm -f "$TEMP_SCRIPT"
-fi
+# Run main function
+main "$@"
