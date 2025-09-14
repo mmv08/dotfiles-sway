@@ -16,6 +16,8 @@ priority=(
   "install_zsh_plugins.sh"
   "install_starship.sh"
   "install_dnf.sh"
+  "install_gnome_extensions.sh"
+  "install_keybindings.sh"
   "install_vscode.sh"
 )
 

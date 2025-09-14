@@ -6,3 +6,6 @@ wget
 zsh-syntax-highlighting
 bat
 lsd
+wmctrl
+ulauncher
+ripgrep
