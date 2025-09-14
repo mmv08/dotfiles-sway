@@ -110,6 +110,12 @@ install_flatpak_app() {
   local app_id="$1"
   local remote="${2:-flathub}"
 
+  # Skip Flatpak installations in CI environments where user namespaces are not available
+  if [ "${CI:-false}" = "true" ]; then
+    echo "Skipping $app_id installation in CI environment (Flatpak requires user namespaces)"
+    return 0
+  fi
+
   # Ensure flatpak is installed
   install_package_if_missing flatpak
 
