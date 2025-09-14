@@ -4,18 +4,17 @@ Lightweight dotfiles setup for Fedora using a bare Git repository that tracks fi
 
 ## 🚀 Quick Start
 
+One command to set up everything:
+
 ```bash
-# Clone bare repo
-git clone --bare http://github.com/mmv08/dotfiles $HOME/.dotfiles
-
-# Create helper alias and checkout files
-alias dot='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-dot checkout
-dot config --local status.showUntrackedFiles no
-
-# Run bootstrap installer
-~/.dotfiles-meta/install.sh
+curl -fsSL https://raw.githubusercontent.com/mmv08/dotfiles/master/.dotfiles-meta/bootstrap.sh | bash
 ```
+
+This will:
+- Clone the dotfiles repository
+- Backup any conflicting files
+- Install all packages and configurations
+- Preserve your custom .zshrc through Oh My Zsh installation
 
 ## 📂 Structure
 
@@ -23,7 +22,8 @@ dot config --local status.showUntrackedFiles no
 |------|---------|
 | `~/.dotfiles` | Bare Git repository |
 | `~/.dotfiles-meta/` | Install scripts and meta files |
-| `~/.dotfiles-meta/install.sh` | Main bootstrap script |
+| `~/.dotfiles-meta/bootstrap.sh` | Bootstrap script for initial setup |
+| `~/.dotfiles-meta/install.sh` | Main installation script |
 | `~/.dotfiles-meta/install_scripts/` | Individual installers |
 
 ## 🛠️ Daily Workflow

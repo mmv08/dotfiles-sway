@@ -4,5 +4,5 @@ set -euo pipefail
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 source "$SCRIPT_DIR/utils.sh"
 
-# Install Zoom via Flatpak
-install_flatpak_app "us.zoom.Zoom"
+# Install qBittorrent via Flatpak
+install_flatpak_app "org.qbittorrent.qBittorrent"

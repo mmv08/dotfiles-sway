@@ -22,7 +22,43 @@ jobs:
           dnf install -y curl git sudo
 
       - name: Run bootstrap (first pass)
-        run: bash ./.dotfiles-meta/install.sh
+        run: bash .dotfiles-meta/bootstrap.sh
+
+      - name: Show installation log
+        if: always()
+        run: |
+          echo "=== Installation Log ==="
+          cat "$HOME/.dotfiles-install.log" || echo "Log file not found"
+
+      - name: Capture .zshrc after first pass
+        run: |
+          if [ ! -f "$HOME/.zshrc" ]; then
+            echo "Expected $HOME/.zshrc to be created after first run"; exit 1
+          fi
+          cp "$HOME/.zshrc" ./.zshrc.first
+          echo "ZSHRC_SHA_FIRST=$(sha256sum "$HOME/.zshrc" | awk '{print $1}')" >> $GITHUB_ENV
 
       - name: Run bootstrap (idempotency check)
-        run: bash ./.dotfiles-meta/install.sh
+        run: bash .dotfiles-meta/bootstrap.sh
+
+      - name: Show installation log (second run)
+        if: always()
+        run: |
+          echo "=== Installation Log (Second Run) ==="
+          cat "$HOME/.dotfiles-install.log" || echo "Log file not found"
+
+      - name: Verify .zshrc idempotency
+        run: |
+          if [ ! -f "$HOME/.zshrc" ]; then
+            echo "Error: $HOME/.zshrc missing after second run"; exit 1
+          fi
+          ZSHRC_SHA_SECOND=$(sha256sum "$HOME/.zshrc" | awk '{print $1}')
+          if [ "${ZSHRC_SHA_FIRST:-}" != "$ZSHRC_SHA_SECOND" ]; then
+            echo "Idempotency check failed: .zshrc changed between runs"
+            echo "First:  $ZSHRC_SHA_FIRST"
+            echo "Second: $ZSHRC_SHA_SECOND"
+            echo
+            echo 'Unified diff:'
+            diff -u ./.zshrc.first "$HOME/.zshrc" || true
+            exit 1
+          fi
