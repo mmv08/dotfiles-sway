@@ -28,6 +28,20 @@ fi
 
 enable_gnome_extension "tactile@lundal.io"
 
+# Install Astra Monitor extension from GNOME Extensions website
+ASTRA_DIR="$HOME/.local/share/gnome-shell/extensions/monitor@astraext.github.io"
+if command_exists gnome-extensions && [ ! -d "$ASTRA_DIR" ]; then
+  # From: https://extensions.gnome.org/extension/6682/astra-monitor/
+  ASTRA_URL="https://extensions.gnome.org/extension-data/monitorastraext.github.io.v26.shell-extension.zip"
+
+  mkdir -p "$(dirname "$ASTRA_DIR")"
+  curl -fsSL "$ASTRA_URL" -o "/tmp/astra-monitor.zip"
+  unzip -q "/tmp/astra-monitor.zip" -d "$ASTRA_DIR"
+  rm -f "/tmp/astra-monitor.zip"
+fi
+
+enable_gnome_extension "monitor@astraext.github.io"
+
 # Configure window management settings
 if command_exists gsettings; then
   gsettings set org.gnome.desktop.wm.preferences button-layout ":minimize,maximize,close"

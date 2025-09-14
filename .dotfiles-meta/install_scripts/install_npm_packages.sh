@@ -7,6 +7,15 @@ set -euo pipefail
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 source "$SCRIPT_DIR/utils.sh"
 
+# Ensure npm is available in non-interactive shells by loading nvm if present
+export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+if [ -s "$NVM_DIR/nvm.sh" ]; then
+    # shellcheck source=/dev/null
+    . "$NVM_DIR/nvm.sh"
+    # Ensure we are using an installed Node version
+    nvm use --lts >/dev/null 2>&1 || nvm install --lts >/dev/null 2>&1
+fi
+
 echo "Installing global npm packages..."
 
 # Check if npm is available

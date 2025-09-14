@@ -63,16 +63,46 @@ download_with_verification() {
   fi
 }
 
-# Add line to shell RC file if not present
+# Add a single line to shell RC file idempotently
 add_to_shell_rc() {
   local line="$1"
   local shell_rc="${2:-$HOME/.zshrc}"
 
-  if [ -f "$shell_rc" ] && ! grep -Fq "$line" "$shell_rc"; then
-    echo -e "\n$line" >> "$shell_rc"
-  elif [ ! -f "$shell_rc" ]; then
-    echo "$line" > "$shell_rc"
+  if [ ! -f "$shell_rc" ]; then
+    : > "$shell_rc"
   fi
+
+  if ! grep -Fxq "$line" "$shell_rc"; then
+    if [ -s "$shell_rc" ]; then
+      echo >> "$shell_rc"
+    fi
+    printf '%s\n' "$line" >> "$shell_rc"
+  fi
+}
+
+# Add a multi-line block to shell RC file if a marker line is not present
+# Usage:
+#   add_block_to_shell_rc "<marker line>" [rc_file] <<'EOF'
+#   <block content including marker line>
+#   EOF
+add_block_to_shell_rc() {
+  local marker="$1"
+  local shell_rc="${2:-$HOME/.zshrc}"
+
+  if [ ! -f "$shell_rc" ]; then
+    : > "$shell_rc"
+  fi
+
+  if grep -Fqx "$marker" "$shell_rc"; then
+    return 0
+  fi
+
+  if [ -s "$shell_rc" ]; then
+    echo >> "$shell_rc"
+  fi
+
+  # Append stdin as the block
+  cat >> "$shell_rc"
 }
 
 # Install flatpak app

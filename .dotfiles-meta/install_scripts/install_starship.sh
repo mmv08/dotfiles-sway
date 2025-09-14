@@ -28,9 +28,11 @@ if ! command_exists starship; then
   tar -xzf "$TEMP_DIR/$TARBALL" -C "$TEMP_DIR"
   sudo install "$TEMP_DIR/starship" /usr/local/bin/starship
 fi
-# Add starship init to shell RC
-INIT_LINE='eval "$(starship init zsh)"'
-add_to_shell_rc "# Starship prompt\n$INIT_LINE"
+# Add starship init to shell RC (idempotent block)
+add_block_to_shell_rc "# Starship prompt" "$HOME/.zshrc" <<'EOF'
+# Starship prompt
+eval "$(starship init zsh)"
+EOF
 
 # Disable Oh-My-Zsh theme to avoid conflicts
 if [[ -f "$HOME/.zshrc" ]] && grep -q '^ZSH_THEME=' "$HOME/.zshrc"; then
