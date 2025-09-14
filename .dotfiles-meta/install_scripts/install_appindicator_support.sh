@@ -8,3 +8,5 @@ install_package_if_missing gnome-extensions-app
 install_package_if_missing gnome-shell-extension-appindicator
 
 enable_gnome_extension "appindicatorsupport@rgcjonas.gmail.com"
+
+
