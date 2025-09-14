@@ -13,7 +13,12 @@ if [ -s "$NVM_DIR/nvm.sh" ]; then
     # shellcheck source=/dev/null
     . "$NVM_DIR/nvm.sh"
     # Ensure we are using an installed Node version
-    nvm use --lts >/dev/null 2>&1 || nvm install --lts >/dev/null 2>&1
+    # Try to use LTS version, install if not present
+    if ! nvm use --lts >/dev/null 2>&1; then
+        echo "Node.js LTS not found, installing..."
+        nvm install --lts >/dev/null 2>&1
+        nvm use --lts >/dev/null 2>&1
+    fi
 fi
 
 echo "Installing global npm packages..."
