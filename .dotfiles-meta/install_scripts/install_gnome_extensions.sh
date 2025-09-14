@@ -16,9 +16,9 @@ install_package_if_missing gnome-shell-extension-appindicator
 enable_gnome_extension "appindicatorsupport@rgcjonas.gmail.com"
 
 # Install Tactile extension (manual installation since not in repos)
-if command_exists gnome-extensions && ! gnome-extensions list | grep -q "tactile@lundal.io"; then
-  TACTILE_URL="https://extensions.gnome.org/extension-data/tactilelundal.io.v29.shell-extension.zip"
-  TACTILE_DIR="$HOME/.local/share/gnome-shell/extensions/tactile@lundal.io"
+TACTILE_DIR="$HOME/.local/share/gnome-shell/extensions/tactile@lundal.io"
+if command_exists gnome-extensions && [ ! -d "$TACTILE_DIR" ]; then
+  TACTILE_URL="https://extensions.gnome.org/extension-data/tactilelundal.io.v34.shell-extension.zip"
 
   mkdir -p "$(dirname "$TACTILE_DIR")"
   curl -fsSL "$TACTILE_URL" -o "/tmp/tactile.zip"

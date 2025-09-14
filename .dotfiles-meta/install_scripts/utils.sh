@@ -40,11 +40,7 @@ enable_gnome_extension() {
   local extension_uuid="$1"
 
   if command_exists gnome-extensions; then
-    gnome-extensions enable "$extension_uuid" 2>/dev/null || {
-      # Fallback for older systems
-      dbus-launch --exit-with-session gsettings set org.gnome.shell enabled-extensions \
-        "$(gsettings get org.gnome.shell enabled-extensions | sed "s/]/, '$extension_uuid']/")"
-    }
+    gnome-extensions enable "$extension_uuid" 2>/dev/null || true
   fi
 }
 
