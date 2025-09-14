@@ -36,7 +36,7 @@ jobs:
             echo "Expected $HOME/.zshrc to be created after first run"; exit 1
           fi
           cp "$HOME/.zshrc" ./.zshrc.first
-          echo "ZSHRC_SHA_FIRST=$(sha256sum \"$HOME/.zshrc\" | awk '{print $1}')" >> $GITHUB_ENV
+          echo "ZSHRC_SHA_FIRST=$(sha256sum "$HOME/.zshrc" | awk '{print $1}')" >> $GITHUB_ENV
 
       - name: Run bootstrap (idempotency check)
         run: bash ./bootstrap.sh
