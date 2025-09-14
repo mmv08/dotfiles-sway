@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -uo pipefail  # Temporarily remove -e to handle nvm errors gracefully
+trap 'echo "DEBUG: Command failed with exit code $? at line $LINENO"' ERR
 
 # Install useful npm packages globally
 # Includes development tools and CLI utilities
@@ -18,11 +19,16 @@ if [ -s "$NVM_DIR/nvm.sh" ]; then
     echo "DEBUG: nvm sourced, checking for Node versions..."
     nvm list || echo "DEBUG: nvm list failed"
     # Ensure we are using an installed Node version
-    # Try to use LTS version, install if not present
-    if ! nvm use --lts >/dev/null 2>&1; then
-        echo "Node.js LTS not found, installing..."
-        nvm install --lts >/dev/null 2>&1
-        nvm use --lts >/dev/null 2>&1
+    # Try default first (which was set during install), then LTS
+    echo "DEBUG: Attempting to use Node version..."
+    if nvm use default 2>&1; then
+        echo "DEBUG: Using default Node version"
+    elif nvm use --lts 2>&1; then
+        echo "DEBUG: Using LTS Node version"
+    else
+        echo "DEBUG: No Node version available, installing LTS..."
+        nvm install --lts
+        nvm use --lts
     fi
     echo "DEBUG: Current node version: $(node --version 2>&1 || echo 'node not found')"
     echo "DEBUG: Current npm version: $(npm --version 2>&1 || echo 'npm not found')"
@@ -35,6 +41,9 @@ echo "DEBUG: which node: $(which node 2>&1 || echo 'not found')"
 echo "DEBUG: which npm: $(which npm 2>&1 || echo 'not found')"
 
 echo "Installing global npm packages..."
+
+# Re-enable exit on error after nvm setup
+set -e
 
 # Check if npm is available
 if ! command_exists npm; then
