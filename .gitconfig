@@ -3,5 +3,16 @@
 # Please adapt and uncomment the following lines:
 	name = Mikhail Mikheev
 	email = 16622558+mmv08@users.noreply.github.com
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICkyeZHiqYDSmPhvkrkiCbvgHFOHVl71LAT0oEZqJm+C
+
 [pull]
 	rebase = false
+
+[gpg]
+  format = ssh
+
+[gpg "ssh"]
+  program = "/opt/1Password/op-ssh-sign"
+
+[commit]
+  gpgsign = true
