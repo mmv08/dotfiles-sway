@@ -1,0 +1,10 @@
+com.discordapp.Discord
+org.qbittorrent.qBittorrent
+com.slack.Slack
+com.spotify.Client
+com.google.Chrome
+com.synology.SynologyDrive
+org.telegram.desktop
+org.localsend.localsend_app
+com.todoist.Todoist
+us.zoom.Zoom
