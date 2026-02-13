@@ -50,6 +50,42 @@ SCRIPTS_DIR="$SCRIPT_DIR/install_scripts"
 
 log "Starting bootstrap installation..."
 
+run_installer_script() {
+    local script="$1"
+    local script_name="$2"
+    local current="${3:-?}"
+    local total="${4:-?}"
+    local start_time
+    local end_time
+    local duration
+    local exit_code
+
+    log "[$current/$total] Running $script_name..."
+    start_time=$(date +%s)
+
+    set +e
+    if [ -x "$script" ]; then
+        "$script" >> "$LOG_FILE" 2>&1
+    else
+        bash "$script" >> "$LOG_FILE" 2>&1
+    fi
+    exit_code=$?
+    set -e
+
+    end_time=$(date +%s)
+    duration=$((end_time - start_time))
+
+    if [ $exit_code -eq 0 ]; then
+        log_success "$script_name completed in ${duration}s"
+        success_scripts+=("$script_name")
+        return 0
+    fi
+
+    log_error "$script_name failed (exit code: $exit_code) after ${duration}s"
+    failed_scripts+=("$script_name")
+    return 1
+}
+
 # Define execution order: ensure dependencies run first
 priority=(
   "install_zsh.sh"
@@ -99,28 +135,7 @@ log "Found $total_scripts scripts to execute"
 for script in "${to_run[@]}"; do
   current_script=$((current_script + 1))
   script_name="$(basename "$script")"
-
-  log "[$current_script/$total_scripts] Running $script_name..."
-
-  start_time=$(date +%s)
-
-  if [ -x "$script" ]; then
-    "$script" >> "$LOG_FILE" 2>&1
-  else
-    bash "$script" >> "$LOG_FILE" 2>&1
-  fi
-  exit_code=$?
-
-  end_time=$(date +%s)
-  duration=$((end_time - start_time))
-
-  if [ $exit_code -eq 0 ]; then
-    log_success "$script_name completed in ${duration}s"
-    success_scripts+=("$script_name")
-  else
-    log_error "$script_name failed (exit code: $exit_code) after ${duration}s"
-    failed_scripts+=("$script_name")
-  fi
+  run_installer_script "$script" "$script_name" "$current_script" "$total_scripts"
 done
 
 # Installation summary
