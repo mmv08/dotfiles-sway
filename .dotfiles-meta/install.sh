@@ -95,6 +95,7 @@ priority=(
   "install_dnf.sh"
   "install_node.sh"
   "install_rust.sh"
+  "install_zellij.sh"
   "install_go.sh"
   "install_npm_packages.sh"
   "install_gnome_extensions.sh"
