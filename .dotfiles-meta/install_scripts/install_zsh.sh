@@ -4,6 +4,39 @@ set -euo pipefail
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 source "$SCRIPT_DIR/utils.sh"
 
+PLUGINS_ONLY="${DOTFILES_ZSH_PLUGINS_ONLY:-0}"
+ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+
+install_plugin() {
+  local repo_url="$1"
+  local plugin_dir="$2"
+
+  if [ -d "$plugin_dir" ]; then
+    git -C "$plugin_dir" pull --ff-only
+    return 0
+  fi
+
+  git clone "$repo_url" "$plugin_dir"
+}
+
+install_zsh_plugins() {
+  install_plugin "https://github.com/zsh-users/zsh-autosuggestions.git" \
+    "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
+  install_plugin "https://github.com/fdellwing/zsh-bat.git" \
+    "$ZSH_CUSTOM/plugins/zsh-bat"
+}
+
+if [ "$PLUGINS_ONLY" = "1" ]; then
+  if [ ! -d "$HOME/.oh-my-zsh" ]; then
+    echo "Oh My Zsh is not installed. Run install_zsh.sh first."
+    exit 1
+  fi
+
+  install_zsh_plugins
+  echo "Zsh plugins installation completed"
+  exit 0
+fi
+
 install_package_if_missing zsh
 
 # Save our custom .zshrc if it exists (either from dotfiles or backup from bootstrap)
@@ -39,3 +72,6 @@ if [ -n "${DOTFILES_ZSHRC_BACKUP:-}" ] && [ -f "$DOTFILES_ZSHRC_BACKUP" ]; then
   cp "$DOTFILES_ZSHRC_BACKUP" "$HOME/.zshrc"
   echo "Bootstrap .zshrc restored successfully"
 fi
+
+install_zsh_plugins
+echo "Zsh plugin installation completed"

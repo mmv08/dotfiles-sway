@@ -35,8 +35,8 @@ source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 export ANDROID_HOME="$HOME/Android/Sdk"
 export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
 
+# opencode
+export PATH=/home/mmv/.opencode/bin:$PATH
 
 # Starship prompt, keep it last
 eval "$(starship init zsh)"
-# opencode
-export PATH=/home/mmv/.opencode/bin:$PATH

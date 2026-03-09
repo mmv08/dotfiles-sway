@@ -46,6 +46,8 @@ enable_gnome_extension "monitor@astraext.github.io"
 # Configure window management settings
 if command_exists gsettings; then
   gsettings set org.gnome.desktop.wm.preferences button-layout ":minimize,maximize,close"
+
+  gsettings set org.gnome.desktop.interface enable-hot-corners false
 fi
 
 echo ""
