@@ -38,3 +38,5 @@ export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$ANDROID_HOME/c
 
 # Starship prompt, keep it last
 eval "$(starship init zsh)"
+# opencode
+export PATH=/home/mmv/.opencode/bin:$PATH

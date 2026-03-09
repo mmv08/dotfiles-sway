@@ -43,7 +43,7 @@ dot push
 
 - **Shell**: Zsh with Oh-My-Zsh, plugins, and Starship prompt
 - **Languages**: Node.js (via nvm), Rust, Go
-- **Tools**: VS Code, JetBrains Toolbox, 1Password, Podman
+- **Tools**: VS Code, JetBrains Toolbox, 1Password, Podman, Opencode
 - **Desktop**: GNOME extensions (Dash to Dock, AppIndicator)
 - **Fonts**: Nerd Fonts for terminal icons
 

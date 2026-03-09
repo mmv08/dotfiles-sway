@@ -17,9 +17,3 @@ if systemctl --user --version >/dev/null 2>&1 && [ -n "${XDG_RUNTIME_DIR:-}" ]; 
     systemctl --user start podman.socket || true
   fi
 fi
-
-
-
-
-
-
