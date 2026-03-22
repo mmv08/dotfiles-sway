@@ -6,5 +6,6 @@ wget
 zsh-syntax-highlighting
 bat
 lsd
+fuzzel
 ripgrep
 openssl-devel
