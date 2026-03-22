@@ -35,7 +35,7 @@ log_warning() {
 ensure_backup_dir() {
     if [ ! -d "$BACKUP_DIR" ]; then
         mkdir -p "$BACKUP_DIR"
-        log "Created backup directory at $BACKUP_DIR"
+        log "Created backup directory at $BACKUP_DIR" >&2
     fi
 }
 
@@ -47,7 +47,7 @@ backup_file() {
     if [ -f "$file" ]; then
         ensure_backup_dir
         cp "$file" "$BACKUP_DIR/$backup_name"
-        log "Backed up $file to $BACKUP_DIR/$backup_name"
+        log "Backed up $file to $BACKUP_DIR/$backup_name" >&2
         echo "$BACKUP_DIR/$backup_name"
     fi
 }
@@ -60,17 +60,10 @@ setup_bare_repo() {
         # Pull latest changes if it's a git repo
         if git --git-dir="$DOTFILES_DIR" --work-tree="$HOME" rev-parse --git-dir >/dev/null 2>&1; then
             log "Fetching latest changes..."
-            git --git-dir="$DOTFILES_DIR" --work-tree="$HOME" fetch origin master --quiet
-
-            local LOCAL=$(git --git-dir="$DOTFILES_DIR" --work-tree="$HOME" rev-parse HEAD)
-            local REMOTE=$(git --git-dir="$DOTFILES_DIR" --work-tree="$HOME" rev-parse origin/master)
-
-            if [ "$LOCAL" != "$REMOTE" ]; then
-                log_warning "Updates available. Pulling latest changes..."
-                git --git-dir="$DOTFILES_DIR" --work-tree="$HOME" pull origin master --quiet
-            else
-                log_success "Repository is up to date"
-            fi
+            git --git-dir="$DOTFILES_DIR" --work-tree="$HOME" fetch origin master:master --quiet
+        else
+            log_error "$DOTFILES_DIR exists but is not a git repository"
+            exit 1
         fi
     else
         log "Cloning dotfiles repository..."
@@ -87,19 +80,22 @@ checkout_dotfiles() {
     log "Checking out dotfiles..."
 
     # Create a temporary file to store conflicting files
-    local conflicts_file="/tmp/dotfiles_conflicts_$$"
+    local conflicts_file
+    conflicts_file=$(mktemp /tmp/dotfiles_conflicts.XXXXXX)
 
     # Try to checkout
-    if ! git --git-dir="$DOTFILES_DIR" --work-tree="$HOME" checkout 2>&1 | tee "$conflicts_file" | grep -q "error:"; then
+    if git --git-dir="$DOTFILES_DIR" --work-tree="$HOME" checkout >"$conflicts_file" 2>&1; then
         log_success "Dotfiles checked out successfully"
         rm -f "$conflicts_file"
         return 0
     fi
 
+    cat "$conflicts_file"
+
     # Parse conflicts and backup
     log_warning "Found existing files that would be overwritten. Backing them up..."
 
-    grep "^\s" "$conflicts_file" | while read -r file; do
+    grep "^[[:space:]]" "$conflicts_file" | while read -r file; do
         file=$(echo "$file" | xargs)  # Trim whitespace
         if [ -n "$file" ] && [ -f "$HOME/$file" ]; then
             backup_file "$HOME/$file"
