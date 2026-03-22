@@ -1,6 +1,6 @@
 # ⚙️ My Dotfiles
 
-Lightweight dotfiles setup for Fedora using a bare Git repository that tracks files in-place inside `$HOME`.
+Lightweight dotfiles setup for Fedora using a bare Git repository that tracks files in-place inside `$HOME`, with shell/tooling bootstrap and Sway-friendly defaults.
 
 ## 🚀 Quick Start
 
@@ -44,8 +44,8 @@ dot push
 - **Shell**: Zsh with Oh-My-Zsh, plugins, and Starship prompt
 - **Languages**: Node.js (via nvm), Rust, Go
 - **Tools**: VS Code, JetBrains Toolbox, 1Password, Podman, Opencode
-- **Desktop**: GNOME extensions (Dash to Dock, AppIndicator)
-- **Fonts**: Nerd Fonts for terminal icons
+- **Desktop**: Sway-friendly defaults without desktop-environment-specific extensions
+- **Fonts**: Inconsolata Nerd Font for Sway and terminal use
 
 ## 🔧 Customization
 

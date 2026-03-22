@@ -35,25 +35,6 @@ install_package_if_missing() {
   fi
 }
 
-# Enable GNOME extension
-enable_gnome_extension() {
-  local extension_uuid="$1"
-
-  if command_exists gnome-extensions; then
-    # Check if extension is installed first
-    if gnome-extensions list | grep -q "$extension_uuid"; then
-      echo "Enabling extension: $extension_uuid"
-      gnome-extensions enable "$extension_uuid" || {
-        echo "Warning: Failed to enable extension $extension_uuid. You may need to log out and log back in, then run: gnome-extensions enable $extension_uuid"
-      }
-    else
-      echo "Warning: Extension $extension_uuid not found in installed extensions list"
-    fi
-  else
-    echo "Warning: gnome-extensions command not available. Extensions will need to be enabled manually."
-  fi
-}
-
 # Download file with verification
 download_with_verification() {
   local url="$1"

@@ -98,8 +98,6 @@ priority=(
   "install_zellij.sh"
   "install_go.sh"
   "install_npm_packages.sh"
-  "install_gnome_extensions.sh"
-  "install_keybindings.sh"
   "install_vscode.sh"
 )
 
