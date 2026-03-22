@@ -1,0 +1,5 @@
+# Load the distro defaults first.
+include /etc/sway/config
+
+# Load per-user overrides from this dotfiles repo.
+include ~/.config/sway/config.d/*.conf
