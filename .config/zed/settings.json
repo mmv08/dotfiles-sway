@@ -7,16 +7,21 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "agent_servers": {
+    "codex-acp": {
+      "type": "registry"
+    }
+  },
   "icon_theme": {
     "mode": "dark",
     "light": "Zed (Default)",
     "dark": "Zed (Default)"
   },
-  "ui_font_size": 16,
-  "buffer_font_size": 15,
+  "ui_font_size": 18.0,
+  "buffer_font_size": 15.0,
   "theme": {
-    "mode": "dark",
-    "light": "One Light",
+    "mode": "light",
+    "light": "Solarized Light",
     "dark": "Solarized Light"
   }
 }
