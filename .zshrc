@@ -40,3 +40,5 @@ export PATH=/home/mmv/.opencode/bin:$PATH
 
 # Starship prompt, keep it last
 eval "$(starship init zsh)"
+# Starship prompt
+eval "$(starship init zsh)"
