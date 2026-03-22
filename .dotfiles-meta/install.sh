@@ -10,6 +10,7 @@ NC='\033[0m' # No Color
 
 # Logging setup
 LOG_FILE="$HOME/.dotfiles-install.log"
+BOOTSTRAP_URL="${DOTFILES_BOOTSTRAP_URL:-https://raw.githubusercontent.com/mmv08/dotfiles-sway/master/.dotfiles-meta/bootstrap.sh}"
 echo "Starting dotfiles installation at $(date)" > "$LOG_FILE"
 
 # Helper functions
@@ -38,7 +39,7 @@ trap cleanup EXIT INT
 # Check if bare repo exists
 if [ ! -d "$HOME/.dotfiles" ]; then
     log_error "Dotfiles repository not found. Run bootstrap.sh first:"
-    echo "  curl -fsSL https://raw.githubusercontent.com/mmv08/dotfiles/master/bootstrap.sh | bash"
+    echo "  curl -fsSL $BOOTSTRAP_URL | bash"
     exit 1
 fi
 

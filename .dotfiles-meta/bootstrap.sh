@@ -9,7 +9,7 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Configuration
-DOTFILES_REPO="https://github.com/mmv08/dotfiles"
+DOTFILES_REPO="${DOTFILES_REPO:-https://github.com/mmv08/dotfiles-sway}"
 DOTFILES_DIR="$HOME/.dotfiles"
 DOTFILES_META="$HOME/.dotfiles-meta"
 BACKUP_DIR="$DOTFILES_META/backups"
