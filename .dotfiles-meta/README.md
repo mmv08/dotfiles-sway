@@ -47,7 +47,7 @@ dot push
 - **Languages**: Node.js (via nvm), Rust, Go
 - **Tools**: VS Code, JetBrains Toolbox, 1Password, Podman, Opencode
 - **Desktop**: Sway-friendly defaults without desktop-environment-specific extensions
-- **Login manager**: GDM enabled for better laptop-panel compatibility with Sway
+- **Login manager**: GDM enabled for better laptop-panel compatibility with Sway, with Sway remembered as the default session
 - **Fonts**: Inconsolata Nerd Font for Sway and terminal use
 
 ## 🔧 Customization
