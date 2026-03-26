@@ -15,6 +15,7 @@ This will:
 - Clone the dotfiles repository
 - Backup any conflicting files
 - Install all packages and configurations
+- Prefer GDM over SDDM for the login screen
 - Preserve your custom .zshrc through Oh My Zsh installation
 
 ## 📂 Structure
@@ -46,6 +47,7 @@ dot push
 - **Languages**: Node.js (via nvm), Rust, Go
 - **Tools**: VS Code, JetBrains Toolbox, 1Password, Podman, Opencode
 - **Desktop**: Sway-friendly defaults without desktop-environment-specific extensions
+- **Login manager**: GDM enabled for better laptop-panel compatibility with Sway
 - **Fonts**: Inconsolata Nerd Font for Sway and terminal use
 
 ## 🔧 Customization

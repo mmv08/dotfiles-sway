@@ -94,6 +94,7 @@ priority=(
   "install_starship.sh"
   "install_flatpak_apps.sh"
   "install_dnf.sh"
+  "install_display_manager.sh"
   "install_node.sh"
   "install_rust.sh"
   "install_zellij.sh"

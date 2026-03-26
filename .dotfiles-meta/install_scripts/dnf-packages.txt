@@ -9,3 +9,4 @@ lsd
 fuzzel
 ripgrep
 openssl-devel
+gdm
