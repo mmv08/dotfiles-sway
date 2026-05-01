@@ -1,0 +1,25 @@
+#!/bin/sh
+set -eu
+
+case "${1:-}" in
+    lock)
+        loginctl lock-session
+        ;;
+    suspend)
+        systemctl suspend
+        ;;
+    reboot)
+        swaynag -t warning \
+            -m "Reboot this computer?" \
+            -B "Reboot" "systemctl reboot"
+        ;;
+    poweroff)
+        swaynag -t warning \
+            -m "Power off this computer?" \
+            -B "Power off" "systemctl poweroff"
+        ;;
+    *)
+        printf '%s\n' "Usage: $0 {lock|suspend|reboot|poweroff}" >&2
+        exit 2
+        ;;
+esac
